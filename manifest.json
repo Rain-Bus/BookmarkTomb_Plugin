@@ -1,0 +1,35 @@
+{
+  "manifest_version": 2,
+  "name": "floccus bookmarks sync",
+  "short_name": "bookmark_tomb",
+  "version": "0.0.21",
+  "description": "Sync your bookmarks by bookmark_tomb",
+  "icons": {
+    "48": "icon/logo.png",
+    "64": "icon/logo.png",
+    "128": "icon/logo.png"
+  },
+
+  "permissions": ["https://*/", "http://*/", "alarms", "bookmarks", "storage", "unlimitedStorage", "tabs"],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
+
+  "options_ui": {
+    "page": "html/options.html",
+    "chrome_style": false,
+    "open_in_tab": false
+  },
+
+  "browser_action": {
+    "browser_style": false,
+    "chrome_style": false,
+    "default_icon": {
+      "48": "icon/logo.png"
+    },
+    "default_title": "Open Floccus options",
+    "default_popup": "html/options.html"
+  },
+
+  "background": {
+    "page": "html/background.html"
+  }
+}
