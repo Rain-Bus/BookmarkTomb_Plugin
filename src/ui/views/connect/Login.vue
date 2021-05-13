@@ -16,7 +16,7 @@
               <v-row>
                 <validated-text-field
                     label="Account"
-                    :content.sync="loginInfo.loginAccount"
+                    :content.sync="loginInfo.account"
                     rules="required|beginWithChar|accountChar|min:6|max:20"
                 ></validated-text-field>
               </v-row>
@@ -27,7 +27,7 @@
                     rules="required|passwordChar|min:8|max:20"
                     :icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                     :type="showPassword ? 'text' : 'password'"
-                    :content.sync="loginInfo.loginPassword"
+                    :content.sync="loginInfo.password"
                     @click:append="showPassword = !showPassword"
                 ></validated-text-field>
               </v-row>
@@ -36,7 +36,7 @@
                 <validated-text-field
                     label="Verify Code"
                     :content.sync="loginInfo.code"
-                    rules="required|numeric"
+                    rules="required|integer"
                     style="width: auto"
                 ></validated-text-field>
                 <v-btn
@@ -57,7 +57,8 @@
                     :disabled="invalid"
                     class="mx-auto"
                     :loading="loginButton.loading"
-                >Login</v-btn>
+                >Login
+                </v-btn>
               </v-row>
 
             </v-col>
@@ -94,6 +95,7 @@ import ValidatedTextField from "@/ui/components/connect/ValidatedTextField.vue";
 import {ValidationObserver} from "vee-validate";
 import {browser} from "webextension-polyfill-ts";
 import {getCodeImgAPI, loginAPI} from "@/api/user";
+import Config from "@/model/constant/settings";
 
 @Component({components: {ValidatedTextField, ValidationObserver}})
 export default class LoginComponent extends Vue {
@@ -103,8 +105,8 @@ export default class LoginComponent extends Vue {
   loginInfo = {
     code: "",
     codeUid: "",
-    loginAccount: "",
-    loginPassword: "",
+    account: "",
+    password: "",
     rememberMe: true,
   };
   snackbar = {
@@ -126,32 +128,32 @@ export default class LoginComponent extends Vue {
   async getCodeImg() {
     this.codeImgButton.loading = true;
     await getCodeImgAPI().then((resp: any) => {
-          let data = resp.data
-          this.loginInfo.codeUid = data.codeUid;
-          this.codeImg = data.codeImg;
-          this.codeImgButton.loading = false;
-        }).catch(() => {
-          this.snackbar.show = true;
-          this.snackbar.text = ErrorMessage.get(6001);
-          this.codeImgButton.loading = false;
-        });
+      let data = resp.data
+      this.loginInfo.codeUid = data.codeUid;
+      this.codeImg = data.codeImg;
+      this.codeImgButton.loading = false;
+    }).catch(() => {
+      this.snackbar.show = true;
+      this.snackbar.text = ErrorMessage.get(6001);
+      this.codeImgButton.loading = false;
+    });
   }
 
   async userLogin() {
-
     this.loginButton.loading = true;
-    await loginAPI(this.loginInfo).then((res: any) => {
-          console.log(res);
-          this.loginButton.loading = false;
-        }).catch(async (err) => {
-          await this.getCodeImg();
-          if (err.response != undefined) {
-            this.snackbar.text = ErrorMessage.get(err.response.data.code);
-            this.snackbar.show = true;
-          }
-          this.loginButton.loading = false;
-        });
-    await browser.tabs.remove((await browser.tabs.getCurrent()).id)
+    await loginAPI(this.loginInfo).then(async (res: any) => {
+      console.log(res.data.token)
+      localStorage.setItem(Config.tokenName, res.data.token)
+      this.loginButton.loading = false;
+      await browser.tabs.remove((await browser.tabs.getCurrent()).id)
+    }).catch(async (err) => {
+      await this.getCodeImg();
+      if (err != undefined) {
+        this.snackbar.text = ErrorMessage.get(err.code);
+        this.snackbar.show = true;
+      }
+      this.loginButton.loading = false;
+    });
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <ValidationProvider :rules="rules" v-slot="{errors}" style="width: 100%">
+  <ValidationProvider mode="lazy" :rules="rules" v-slot="{errors}" style="width: 100%">
     <v-text-field
         :label="$attrs.label"
         :value="content"

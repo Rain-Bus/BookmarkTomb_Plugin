@@ -1,9 +1,10 @@
 {
   "manifest_version": 2,
-  "name": "floccus bookmarks sync",
+  "name": "bookmark tomb sync",
   "short_name": "bookmark_tomb",
-  "version": "0.0.21",
-  "description": "Sync your bookmarks by bookmark_tomb",
+  "version": "0.1",
+  "description": "Sync your bookmarks by bookmark tomb",
+  "homepage_url": "https://blog.fallen-angle.com/BookmarkTomb_Docs/",
   "icons": {
     "48": "icon/logo.png",
     "64": "icon/logo.png",
@@ -25,7 +26,7 @@
     "default_icon": {
       "48": "icon/logo.png"
     },
-    "default_title": "Open Floccus options",
+    "default_title": "Open BookmarkTomb Options",
     "default_popup": "html/options.html"
   },
 

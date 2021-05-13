@@ -136,7 +136,7 @@ export default class PopupComponent extends Vue {
   serverVersion: string = null
   pluginVersion = Config.version
   syncItems = new Array<SyncItem>()
-  tips = ['<span>Get help from <a href="https://www.baidu.com" target="_blank" class="text-decoration-none">our page</a></span>',
+  tips = ['<span>Get help from <a href="https://blog.fallen-angle.com/BookmarkTomb_Docs/" target="_blank" class="text-decoration-none">our page</a></span>',
     "Download from google"]
 
   async created() {

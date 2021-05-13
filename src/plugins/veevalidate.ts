@@ -1,5 +1,5 @@
 import {extend} from "vee-validate"
-import {email, required, max, min, numeric, max_value, min_value} from 'vee-validate/dist/rules'
+import {email, required, max, min, integer, max_value, min_value} from 'vee-validate/dist/rules'
 
 
 extend('required', {
@@ -37,8 +37,8 @@ extend("max", {
     message: "This field must have at most {length} characters."
 })
 
-extend("numeric", {
-    ...numeric,
+extend("integer", {
+    ...integer,
     message: "This field must be number."
 })
 

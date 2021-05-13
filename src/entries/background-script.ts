@@ -30,6 +30,7 @@ import errorMap from "@/model/constant/error";
 import {ErrorMessage} from "@/model/request/error";
 import {getSystemInfoAPI} from "@/api/public";
 import {PublicSystemInfo} from "@/model/request/public";
+import request from "@/lib/instance/request";
 
 // Use the localSyncIds(in the systemInfo indexDB) to identify the syncing collections and bookmarks,
 // if the listener detect the change related to the localSyncIds, it will process matched statement.
@@ -198,5 +199,16 @@ async function executeSync() {
         if (serverModifyTime.isAfter(dayjs(syncItem.serverModifyTime))) {
             await pullItem(syncItem.syncId)
         }
+    }
+}
+
+// Listen the new baseURL from localStorage, which
+setInterval(listenBaseURL, 10000)
+
+function listenBaseURL() {
+    let newBaseURL = localStorage.getItem("baseURL")
+    if (Config.baseURL !== newBaseURL) {
+        Config.baseURL = newBaseURL;
+        request.defaults.baseURL = newBaseURL;
     }
 }
